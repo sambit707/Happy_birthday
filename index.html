@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Happy Birthday</title>
+    <meta
+      name="description"
+      content="A dreamy birthday surprise for the most magical love."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="stars" aria-hidden="true"></div>
+
+    <div class="petals" aria-hidden="true">
+      <span style="--i: 1"></span>
+      <span style="--i: 2"></span>
+      <span style="--i: 3"></span>
+      <span style="--i: 4"></span>
+      <span style="--i: 5"></span>
+      <span style="--i: 6"></span>
+      <span style="--i: 7"></span>
+      <span style="--i: 8"></span>
+      <span style="--i: 9"></span>
+      <span style="--i: 10"></span>
+      <span style="--i: 11"></span>
+      <span style="--i: 12"></span>
+      <span style="--i: 13"></span>
+      <span style="--i: 14"></span>
+      <span style="--i: 15"></span>
+      <span style="--i: 16"></span>
+      <span style="--i: 17"></span>
+      <span style="--i: 18"></span>
+      <span style="--i: 19"></span>
+      <span style="--i: 20"></span>
+    </div>
+
+    <main class="page-shell">
+      <section class="entry-screen" id="entryScreen">
+        <div class="inner-glow"></div>
+        <button id="openButton" class="open-button" type="button">
+          Tap to open your magical surprise
+        </button>
+      </section>
+
+      <section class="surprise-screen" id="surpriseScreen" aria-live="polite">
+        <div class="cake-scene">
+          <div class="cake-wrap">
+            <div class="cake">
+              <div class="cake-top"></div>
+              <div class="icing icing-1"></div>
+              <div class="icing icing-2"></div>
+              <div class="icing icing-3"></div>
+              <div class="cake-base"></div>
+
+              <div class="candle-group">
+                <div class="candle" style="--candle-left: 0;">
+                  <div class="wick"></div>
+                  <div class="flame"></div>
+                </div>
+                <div class="candle" style="--candle-left: 1;">
+                  <div class="wick"></div>
+                  <div class="flame"></div>
+                </div>
+                <div class="candle" style="--candle-left: 2;">
+                  <div class="wick"></div>
+                  <div class="flame"></div>
+                </div>
+                <div class="candle" style="--candle-left: 3;">
+                  <div class="wick"></div>
+                  <div class="flame"></div>
+                </div>
+                <div class="candle" style="--candle-left: 4;">
+                  <div class="wick"></div>
+                  <div class="flame"></div>
+                </div>
+              </div>
+
+              <div class="smoke smoke-1"></div>
+              <div class="smoke smoke-2"></div>
+              <div class="smoke smoke-3"></div>
+              <div class="smoke smoke-4"></div>
+            </div>
+          </div>
+        </div>
+
+        <p id="statusText" class="status-text">Blow gently to make the wish come true</p>
+      </section>
+
+      <section class="finale-overlay" id="finaleOverlay" aria-live="assertive">
+        <div class="finale-card">
+          <p class="subtitle">For the one who makes my world glow</p>
+          <h1>Happy Birthday <span id="nameText">my dear piluuuu urf smituuuuuu</span></h1>
+          <p class="message">
+            You are the softest magic in my life, the warmest smile in my dreams, and the
+            most beautiful blessing I could ever ask for. Thank you for being my favorite
+            person, my forever safe place, and the reason my heart feels so full. I love
+            you more than words can ever say. May your every wish bloom into the sweetest
+            reality, today and always.
+          </p>
+        </div>
+      </section>
+    </main>
+
+    <audio id="bgMusic" preload="auto" loop crossorigin="anonymous">
+      <!-- Replace this with your own real romantic song URL when ready. -->
+      <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg" />
+    </audio>
+
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+    <script src="script.js"></script>
+  </body>
+</html>
