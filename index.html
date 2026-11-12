@@ -14,7 +14,7 @@
       href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="style.css?v=20261112-2" />
   </head>
   <body>
     <div class="stars" aria-hidden="true"></div>
@@ -92,6 +92,10 @@
         </div>
 
         <p id="statusText" class="status-text">Blow gently to make the wish come true</p>
+        <div class="interaction-controls">
+          <button id="micButton" class="small-button" type="button">Enable microphone</button>
+          <button id="wishButton" class="small-button" type="button">Tap to blow out candles</button>
+        </div>
       </section>
 
       <section class="finale-overlay" id="finaleOverlay" aria-live="assertive">
@@ -109,12 +113,16 @@
       </section>
     </main>
 
-    <audio id="bgMusic" preload="auto" loop crossorigin="anonymous">
-      <!-- Replace this with your own real romantic song URL when ready. -->
-      <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg" />
+    <div class="music-controls" id="musicControls" hidden>
+      <button id="musicButton" class="small-button" type="button">Play music</button>
+      <p id="musicStatus" role="status"></p>
+    </div>
+    <audio id="bgMusic" preload="none" loop playsinline>
+      <!-- Replace song.mp3 with your custom song file or a direct MP3 URL. -->
+      <source src="song.mp3" type="audio/mpeg" />
     </audio>
 
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
-    <script src="script.js"></script>
+    <script async src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+    <script src="script.js?v=20261112-2"></script>
   </body>
 </html>

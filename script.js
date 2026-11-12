@@ -8,96 +8,120 @@ const statusText = document.getElementById("statusText");
 const music = document.getElementById("bgMusic");
 const candles = [...document.querySelectorAll(".candle")];
 
-const BLOW_THRESHOLD = 0.45;
-
+const BLOW_THRESHOLD = 0.075;
+const micButton = document.getElementById("micButton");
+const musicButton = document.getElementById("musicButton");
+const musicStatus = document.getElementById("musicStatus");
 nameText.textContent = birthdayName;
-
-music.volume = 0.75;
-
-let musicStarted = false;
-let micReady = false;
-let analyser = null;
-let dataArray = null;
-let blowTriggered = false;
-
-async function startMagic() {
-  if (musicStarted) return;
-  musicStarted = true;
-
-  entryScreen.classList.add("hidden");
-  surpriseScreen.classList.add("visible");
-
-  try {
-    await music.play();
-  } catch (error) {
-    console.warn("Audio play was blocked before interaction. The user action already started the flow.", error);
-  }
-
-  await initMicrophone();
+music.volume = 0.35;
+let opened = false, micPending = false, blowTriggered = false;
+let analyser, dataArray, audioContext, micStream, frameId;
+let loudSince = null;
+function playMusic() {
+  musicStatus.textContent = "Loading your song...";
+  const pending = music.play();
+  if (pending) pending.catch(() => {
+    musicStatus.textContent = "Tap Play music to retry. If it still fails, check the song URL in index.html.";
+    musicButton.textContent = "Play music";
+  });
 }
-
+music.addEventListener("playing", () => {
+  musicStatus.textContent = "";
+  musicButton.textContent = "Pause music";
+});
+music.addEventListener("error", () => {
+  musicStatus.textContent = "Song unavailable. Use a direct MP3 URL or a local song.mp3 in index.html.";
+  musicButton.textContent = "Retry music";
+});
+musicButton.addEventListener("click", () => {
+  if (!music.paused) {
+    music.pause();
+    musicButton.textContent = "Play music";
+  } else {
+    if (music.error) music.load();
+    playMusic();
+  }
+});
+function startMagic() {
+  if (opened) return;
+  opened = true;
+  entryScreen.classList.add("hidden");
+  entryScreen.inert = true;
+  surpriseScreen.classList.add("visible");
+  document.getElementById("musicControls").hidden = false;
+  // Both requests start during the tap; remote music never delays the mic prompt.
+  playMusic();
+  void initMicrophone();
+}
 openButton.addEventListener("click", startMagic);
-
+micButton.addEventListener("click", initMicrophone);
+document.getElementById("wishButton").addEventListener("click", triggerBlowOut);
 async function initMicrophone() {
-  if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-    statusText.textContent = "Microphone not supported on this device";
+  if (micPending || micStream || blowTriggered) return;
+  if (!window.isSecureContext || !navigator.mediaDevices?.getUserMedia) {
+    statusText.textContent = "Microphone needs HTTPS or localhost. Open the secure site in Chrome/Safari, or tap below to make your wish.";
     return;
   }
-
+  micPending = true;
+  micButton.disabled = true;
+  statusText.textContent = "Allow microphone access in your browser to blow out the candles.";
   try {
-    const stream = await navigator.mediaDevices.getUserMedia({
-      audio: {
-        echoCancellation: false,
-        noiseSuppression: false,
-        autoGainControl: false,
-      },
-    });
-
     const AudioCtx = window.AudioContext || window.webkitAudioContext;
-    const audioContext = new AudioCtx();
-    const source = audioContext.createMediaStreamSource(stream);
-
+    audioContext = new AudioCtx();
+    // Resume on the tap for mobile browsers.
+    const resumed = audioContext.resume();
+    const requested = navigator.mediaDevices.getUserMedia({audio: {
+      echoCancellation: true, noiseSuppression: false, autoGainControl: false
+    }});
+    const results = await Promise.allSettled([requested, resumed]);
+    if (results[0].status === "fulfilled") micStream = results[0].value;
+    for (const result of results) if (result.status === "rejected") throw result.reason;
+    if (blowTriggered) { stopMicrophone(); return; }
     analyser = audioContext.createAnalyser();
     analyser.fftSize = 2048;
-    analyser.smoothingTimeConstant = 0.8;
-    source.connect(analyser);
-
-    dataArray = new Uint8Array(analyser.frequencyBinCount);
-    micReady = true;
-    statusText.textContent = "Blow gently to make the wish come true";
-
-    requestAnimationFrame(updateVolume);
+    audioContext.createMediaStreamSource(micStream).connect(analyser);
+    dataArray = new Uint8Array(analyser.fftSize);
+    micButton.hidden = true;
+    statusText.textContent = "Make a wish, then blow gently near your microphone";
+    frameId = requestAnimationFrame(updateVolume);
   } catch (error) {
-    console.warn("Microphone permission failed or was blocked.", error);
-    statusText.textContent = "Tap the candles to make the magic bloom";
-    surpriseScreen.addEventListener("pointerdown", triggerBlowOut, { once: true });
+    stopMicrophone();
+    statusText.textContent = error.name === "NotAllowedError" || error.name === "SecurityError"
+      ? "Microphone blocked. Allow Microphone in this site's browser settings, then tap Retry microphone. Or tap below to make your wish."
+      : "Microphone unavailable. Check your microphone and retry, or tap below to make your wish.";
+    micButton.textContent = "Retry microphone";
+  } finally {
+    micPending = false;
+    micButton.disabled = false;
   }
 }
-
-function updateVolume() {
-  if (!analyser || !dataArray) {
-    return;
-  }
-
-  analyser.getByteFrequencyData(dataArray);
-
-  let total = 0;
-  for (let i = 0; i < dataArray.length; i += 1) {
-    total += dataArray[i];
-  }
-
-  const averageVolume = total / dataArray.length / 255;
-
-  if (averageVolume > BLOW_THRESHOLD && !blowTriggered) {
-    triggerBlowOut();
-  }
-
-  requestAnimationFrame(updateVolume);
+function updateVolume(time) {
+  if (blowTriggered || !analyser) return;
+  analyser.getByteTimeDomainData(dataArray);
+  let energy = 0;
+  for (const sample of dataArray) energy += ((sample - 128) / 128) ** 2;
+  const rms = Math.sqrt(energy / dataArray.length);
+  if (rms > BLOW_THRESHOLD) {
+    if (loudSince === null) loudSince = time;
+    if (time - loudSince >= 180) { triggerBlowOut(); return; }
+  } else loudSince = null;
+  frameId = requestAnimationFrame(updateVolume);
 }
+function stopMicrophone() {
+  cancelAnimationFrame(frameId);
+  micStream?.getTracks().forEach(track => track.stop());
+  micStream = null;
+  analyser = null;
+  if (audioContext && audioContext.state !== "closed") void audioContext.close().catch(() => {});
+  audioContext = null;
+}
+window.addEventListener("pagehide", stopMicrophone);
 
 function triggerBlowOut() {
   if (blowTriggered) return;
   blowTriggered = true;
+  stopMicrophone();
+  document.querySelector(".interaction-controls").hidden = true;
 
   document.body.classList.add("blown");
   statusText.textContent = "The wish has been made...";
