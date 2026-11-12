@@ -178,33 +178,33 @@ function launchConfetti() {
   }
 
   confetti({
-    particleCount: 160,
+    particleCount: 110,
     spread: 90,
     startVelocity: 42,
     origin: { y: 0.48 },
-    scalar: 1.1,
-    colors: ["#ff7ecf", "#ffd76d", "#9fe3ff", "#caa6ff", "#fff5d6"],
+    scalar: 0.85,
+    colors: ["#f0c3d1", "#e5c692", "#c0b4d5", "#f7e6dc", "#a8b6a2"],
   });
 
   setTimeout(() => {
     confetti({
-      particleCount: 220,
+      particleCount: 90,
       spread: 120,
       startVelocity: 36,
       origin: { y: 0.5 },
-      scalar: 1.25,
-      colors: ["#ff9ec8", "#ffc76d", "#d0c8ff", "#b8f5d0"],
+      scalar: 0.9,
+      colors: ["#f0c3d1", "#e5c692", "#c0b4d5", "#f7e6dc", "#a8b6a2"],
     });
   }, 180);
 
   setTimeout(() => {
     confetti({
-      particleCount: 260,
+      particleCount: 80,
       spread: 140,
       startVelocity: 52,
       origin: { y: 0.42 },
-      scalar: 1.5,
-      colors: ["#ff7ecf", "#ffe4a6", "#8fd3ff", "#b5a4ff"],
+      scalar: 1,
+      colors: ["#f0c3d1", "#e5c692", "#c0b4d5", "#f7e6dc", "#a8b6a2"],
     });
   }, 360);
 }

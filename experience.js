@@ -14,7 +14,8 @@
   ];
   let whisperIndex = 0;
   let width = 0, height = 0, animationId = 0, lastFrame = 0;
-  let stars = [], sparks = [];
+  let stars = [], sparks = [], meteors = [];
+  let nextMeteor = 5500;
   const pointer = { x: -1000, y: -1000 };
   const random = (min, max) => min + Math.random() * (max - min);
 
@@ -52,6 +53,19 @@
         ctx.moveTo(star.x, star.y); ctx.lineTo(pointer.x, pointer.y); ctx.stroke();
       }
     }
+    if (!reducedMotion.matches && time > nextMeteor) {
+      meteors.push({ x: random(width * .35, width * .9), y: random(0, height * .25), life: 1 });
+      nextMeteor = time + random(8000, 14000);
+    }
+    meteors = meteors.filter(meteor => meteor.life > 0);
+    for (const meteor of meteors) {
+      meteor.x -= 4.5 * delta; meteor.y += 2 * delta; meteor.life -= .012 * delta;
+      const trail = ctx.createLinearGradient(meteor.x, meteor.y, meteor.x + 80, meteor.y - 35);
+      trail.addColorStop(0, `rgba(244,218,192,${Math.max(0, meteor.life) * .5})`);
+      trail.addColorStop(1, "rgba(244,218,192,0)");
+      ctx.beginPath(); ctx.strokeStyle = trail; ctx.lineWidth = 1;
+      ctx.moveTo(meteor.x, meteor.y); ctx.lineTo(meteor.x + 80, meteor.y - 35); ctx.stroke();
+    }
     sparks = sparks.filter(spark => spark.life > 0);
     for (const spark of sparks) {
       spark.x += spark.vx * delta; spark.y += spark.vy * delta;
@@ -76,7 +90,13 @@
     sparks = sparks.slice(-160);
   }
 
-  document.addEventListener("pointermove", event => { pointer.x = event.clientX; pointer.y = event.clientY; }, { passive: true });
+  document.addEventListener("pointermove", event => {
+    pointer.x = event.clientX; pointer.y = event.clientY;
+    if (!reducedMotion.matches && event.pointerType !== "touch") {
+      document.documentElement.style.setProperty("--light-x", `${event.clientX}px`);
+      document.documentElement.style.setProperty("--light-y", `${event.clientY}px`);
+    }
+  }, { passive: true });
   document.addEventListener("pointerdown", event => burst(event.clientX, event.clientY), { passive: true });
   document.addEventListener("pointerleave", () => { pointer.x = -1000; pointer.y = -1000; });
   window.addEventListener("resize", resize, { passive: true });
@@ -90,6 +110,60 @@
   }
   document.addEventListener("visibilitychange", restartAnimation);
   reducedMotion.addEventListener("change", restartAnimation);
+
+  const portal = document.querySelector(".garden-portal");
+  const finePointer = window.matchMedia("(hover: hover) and (pointer: fine)");
+  portal.addEventListener("pointermove", event => {
+    if (reducedMotion.matches || !finePointer.matches) return;
+    const rect = portal.getBoundingClientRect();
+    portal.style.setProperty("--portal-ry", `${(event.clientX - rect.left - rect.width / 2) / rect.width * 7}deg`);
+    portal.style.setProperty("--portal-rx", `${-(event.clientY - rect.top - rect.height / 2) / rect.height * 5}deg`);
+  }, { passive: true });
+  portal.addEventListener("pointerleave", () => {
+    portal.style.setProperty("--portal-ry", "0deg");
+    portal.style.setProperty("--portal-rx", "0deg");
+  });
+  let flowerTimer;
+  const floralWhispers = ["one little bloom, a whole lot of love", "my favourite flower is your smile", "a little wish, just for you"];
+  let floralWhisperIndex = 0;
+  document.getElementById("flowerButton").addEventListener("click", event => {
+    const rect = event.currentTarget.getBoundingClientRect();
+    burst(rect.left + rect.width / 2, rect.top, true);
+    portal.classList.remove("flower-kiss");
+    requestAnimationFrame(() => portal.classList.add("flower-kiss"));
+    clearTimeout(flowerTimer);
+    flowerTimer = setTimeout(() => portal.classList.remove("flower-kiss"), 1150);
+    document.getElementById("portalWhisper").textContent = floralWhispers[floralWhisperIndex++ % floralWhispers.length];
+  });
+
+  const reasons = [
+    { title: "The way you smile.", text: "You have this little way of making even an ordinary day feel like something worth remembering.", icon: "☼" },
+    { title: "That beautiful heart.", text: "Your kindness lives in the smallest things. I notice them, and I fall for you a little more every time.", icon: "♡" },
+    { title: "You. Just being you.", text: "You never have to be anything more. Every little version of you is already my favourite.", icon: "✿" }
+  ];
+  let reasonIndex = 0;
+  let reasonAnimation;
+  function showReason(step) {
+    reasonIndex = (reasonIndex + step + reasons.length) % reasons.length;
+    const reason = reasons[reasonIndex];
+    document.getElementById("reasonTitle").textContent = reason.title;
+    document.getElementById("reasonText").textContent = reason.text;
+    document.querySelector(".reason-icon").textContent = reason.icon;
+    document.getElementById("reasonCount").textContent = `0${reasonIndex + 1} / 03`;
+    if (!reducedMotion.matches) {
+      reasonAnimation?.cancel();
+      reasonAnimation = document.getElementById("reasonContent").animate([
+        { opacity: .1, transform: "translateY(8px)" }, { opacity: 1, transform: "translateY(0)" }
+      ], { duration: 450, easing: "ease-out" });
+    }
+  }
+  document.getElementById("reasonNext").addEventListener("click", () => showReason(1));
+  document.getElementById("reasonPrevious").addEventListener("click", () => showReason(-1));
+  document.querySelector(".reasons").addEventListener("keydown", event => {
+    if (event.key === "ArrowRight" || event.key === "ArrowLeft") {
+      event.preventDefault(); showReason(event.key === "ArrowRight" ? 1 : -1);
+    }
+  });
 
   document.getElementById("bloomButton").addEventListener("click", event => {
     const rect = event.currentTarget.getBoundingClientRect();

@@ -199,4 +199,110 @@ body.wishing .moon { box-shadow: inset 14px -7px 0 0 #ead8b6, 0 0 70px #eac6b00c
   .entry-description { font-size: 9px; margin-bottom: 12px; }
   .entry-footnote { display: none; }
 }
+/* Moonlight atelier: tactile florals, layered light and personal keepsakes. */
+body { background: radial-gradient(ellipse at 80% 30%, #4b35433d, transparent 55%), radial-gradient(ellipse at 8% 90%, #1c37333b, transparent 55%), #100f1b; }
+.ambient-light { position: fixed; inset: 0; pointer-events: none; background: radial-gradient(450px circle at var(--light-x, 70%) var(--light-y, 30%), #dfadbf08, transparent 80%); z-index: 0; }
+.entry-screen { perspective: 1400px; }
+.entry-copy { animation: atelierArrive 1.3s .1s both; }
+.garden-portal { background: radial-gradient(ellipse at 45% 30%, #d5b7b515, transparent 65%), linear-gradient(150deg, #6f52551c, #18272222); border-color: #e7d5c631; box-shadow: inset 0 0 100px #edc5ca05, 0 30px 100px #0002; transform: rotate(2deg) rotateY(var(--portal-ry, 0deg)) rotateX(var(--portal-rx, 0deg)); transition: transform .8s cubic-bezier(.2,.7,.3,1), box-shadow .7s; }
+.garden-portal:hover { box-shadow: inset 0 0 100px #edc5ca0a, 0 30px 100px #0003, 0 0 90px #d8a4b109; }
+.garden-portal::after { content: ''; position: absolute; inset: 12% 3% 8%; border-radius: 50%; background: radial-gradient(ellipse, #ffcfaf12, transparent 68%); pointer-events: none; z-index: -1; }
+.portal-ring { border-color: #e3c6bc14; }
+.portal-caption { top: 37px; z-index: 3; color: #d6c2c6; font-size: 16px; text-shadow: 0 2px 15px #100e1d; }
+.hero-flowers { width: 116%; height: auto; left: -8%; bottom: -55px; filter: brightness(.86) saturate(.78) drop-shadow(0 20px 30px #0005); z-index: 1; animation: botanicalBreath 10s ease-in-out infinite alternate; }
+.garden-portal .envelope { top: 25%; left: auto; right: -35px; scale: .77; z-index: 3; }
+.portal-dedication { bottom: 52px; left: -43px; padding: 18px 25px; background: linear-gradient(135deg, #f7e9dfee, #e8d3cfeb); border: 1px solid #fff5; box-shadow: 0 12px 40px #0004; transform: rotate(-8deg); backdrop-filter: blur(10px); }
+.portal-dedication span { color: #967877; font-size: 6px; letter-spacing: 2px; }
+.portal-dedication strong { color: #7a505d; font-size: 31px; }
+.portal-dedication::after { content: ''; position: absolute; right: 13px; top: 12px; width: 23px; height: 28px; border: 1px solid #9d777c33; border-radius: 50% 50% 2px 2px; }
+.portal-coordinate { bottom: -50px; font-size: 7px; letter-spacing: 1.8px; }
+.constellation { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; opacity: .4; }
+.constellation path { stroke: #ead6ad; stroke-opacity: .3; stroke-width: .6; stroke-dasharray: 3 6; fill: none; }
+.constellation circle { fill: #f4deac; filter: drop-shadow(0 0 4px #efdbad); }
+.flower-wish { position: absolute; right: -18px; bottom: 45px; z-index: 4; display: grid; place-items: center; border-radius: 50%; width: 48px; height: 48px; border: 1px solid #d6b4b845; background: #29212bdd; color: var(--pink); font-size: 28px; box-shadow: 0 0 30px #eab8bc12; backdrop-filter: blur(14px); transition: background .3s, scale .3s; }
+.flower-wish:hover { background: #49313e; scale: 1.1; }
+.flower-wish span { transition: rotate 1s; }
+.flower-wish:hover span { rotate: 120deg; }
+.garden-portal.flower-kiss .hero-flowers { animation: botanicalKiss 1.1s ease; }
+.entry-title { font-size: clamp(66px, 6vw, 90px); text-wrap: initial; }
+.entry-title em { color: #f0c3d1; text-shadow: 0 0 50px #e6a2bd18; }
+.open-button { background: linear-gradient(115deg, #f5ded3, #e4b3c7 75%); border-color: #fff6; box-shadow: 0 10px 36px #e4b3c71c, inset 0 1px 0 #fff8; position: relative; overflow: hidden; }
+.open-button::before { content: ''; position: absolute; top: -80%; bottom: -80%; left: -50%; width: 25%; background: linear-gradient(90deg, transparent, #fff5, transparent); rotate: 25deg; transition: left .9s ease; }
+.open-button:hover::before { left: 130%; }
+.entry-footnote { color: #a994a3; letter-spacing: .45px; }
+.entry-footnote span { color: var(--gold); margin-right: 6px; }
+.garden-floor { height: 230px; opacity: .3; mask-image: linear-gradient(transparent, #000 60%); }
+.garden-floor img { width: 420px; bottom: -330px; left: -155px; filter: saturate(.7) brightness(.7); }
+.garden-floor img:last-child { right: -155px; }
+.cake-flowers { width: 460px; height: 320px; bottom: -20px; opacity: .38; filter: saturate(.65) brightness(.8); object-fit: contain; transform: scaleX(1.2); mask-image: radial-gradient(ellipse, transparent 28%, #000 60%, transparent 78%); }
+.cake { background: linear-gradient(90deg, #ac718a, #dfa5b3 28%, #f1c2c9 55%, #ac718a); box-shadow: inset 0 -12px 18px #78455c44, inset 2px 0 10px #f7d7d026; }
+.cake-top { background: radial-gradient(ellipse at 43% 20%, #fff5e7, #f4d8d2 70%, #d7b1b9); box-shadow: 0 5px 0 #efcdc9, 0 8px 14px #b77d8a22; }
+.cake-base { background: linear-gradient(#dac7b1, #b8a08e); box-shadow: 0 5px 0 #76606c, 0 12px 18px #0004; }
+.scene-heading h2 { text-shadow: 0 4px 40px #edbed00a; }
+.finale-overlay { background: radial-gradient(ellipse at 50% 0%, #65435199, transparent 60%), linear-gradient(#211725f5, #100f1bf9); }
+.finale-overlay::before { background-image: url('flowers-moonlight.png'), url('flowers-moonlight.png'); background-size: 470px auto; background-position: left -210px bottom -300px, right -210px bottom -300px; opacity: .5; filter: saturate(.65) brightness(.7); }
+.finale-card { max-width: 780px; }
+.finale-heart { width: 65px; height: 65px; display: grid; place-items: center; margin: 0 auto 12px; border-radius: 50%; border: 1px solid #e9c1ce28; background: #ecc2ca06; font-size: 40px; }
+.finale-card h1 { text-wrap: balance; }
+.finale-card .message { color: #d1bbc8; }
+.reasons { margin: 30px auto 24px; max-width: 420px; padding: 21px 24px 14px; text-align: left; border: 1px solid #e6c6c333; background: linear-gradient(140deg, #362733ee, #201a2bf5); border-radius: 5px; position: relative; }
+.reasons::before { content: ''; position: absolute; inset: 5px; border: 1px solid #e6c6c30c; pointer-events: none; }
+.reason-topline { display: flex; justify-content: space-between; gap: 10px; color: var(--gold); font-size: 6px; letter-spacing: 1.8px; }
+.reason-content { padding: 20px 0 12px; min-height: 143px; }
+.reason-icon { color: #d2b49b; font-size: 25px; }
+.reason-content h2 { font: 500 30px/1.15 'Cormorant Garamond', serif; color: #f1dedb; margin: 9px 0 8px; }
+.reason-content p { font-size: 10px; line-height: 1.9; color: #bda6b9; margin: 0; max-width: 335px; }
+.reason-bottom { border-top: 1px solid #e6c6c317; padding-top: 12px; display: flex; align-items: center; justify-content: space-between; }
+.reason-bottom>span { font: italic 15px 'Cormorant Garamond', serif; color: #bda6b9; }
+.reason-bottom>div { display: flex; gap: 6px; }
+.reason-bottom button { width: 34px; height: 34px; border-radius: 50%; border: 1px solid #e6c6c32b; color: var(--pink); background: #edbed005; transition: background .3s, transform .3s; }
+.reason-bottom button:hover { background: #edbed018; transform: translateY(-2px); }
+.reason-content.changing { animation: reasonTurn .45s ease; }
+.secret-letter { border-left: 1px solid #d5b39d50; padding: 10px 20px; font-size: 24px; }
+.music-controls { background: linear-gradient(115deg, #28202fef, #171520eb); border-color: #e6c6c32b; box-shadow: 0 8px 40px #0004, inset 0 1px 0 #ffe3e507; }
+@keyframes atelierArrive { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
+@keyframes botanicalBreath { from { transform: rotate(-1deg) translateY(0); } to { transform: rotate(1deg) translateY(-4px); } }
+@keyframes botanicalKiss { 35% { transform: rotate(-3deg) scale(1.035); filter: brightness(1) saturate(.9) drop-shadow(0 0 30px #f5c9c422); } 70% { transform: rotate(1deg) scale(1.015); } }
+@keyframes reasonTurn { from { opacity: .25; transform: translateY(7px); } to { opacity: 1; transform: none; } }
+@media (max-width: 800px) {
+  .garden-portal { width: 216px; height: 255px; }
+  .hero-flowers { bottom: -25px; width: 118%; left: -9%; filter: brightness(.9) saturate(.8) drop-shadow(0 8px 20px #0003); }
+  .portal-caption { top: 17px; font-size: 11px; }
+  .garden-portal .envelope { top: 19%; left: auto; right: -25px; scale: .73; }
+  .portal-dedication { bottom: 14px; left: -22px; padding: 10px 16px; }
+  .portal-dedication span { font-size: 5px; letter-spacing: 1.3px; }
+  .portal-dedication strong { font-size: 23px; }
+  .portal-dedication::after { right: 8px; top: 7px; width: 13px; height: 18px; }
+  .flower-wish { right: -17px; bottom: 11px; width: 34px; height: 34px; font-size: 20px; }
+  .entry-screen { gap: 23px; }
+  .entry-title { font-size: clamp(49px, 9vw, 68px); }
+  .entry-title br:first-of-type { display: initial; }
+  .entry-description { font-size: 10px; }
+  .garden-floor img { width: 340px; bottom: -260px; left: -160px; }
+  .garden-floor img:last-child { right: -160px; }
+  .finale-overlay::before { background-size: 350px auto; background-position: left -190px bottom -220px, right -190px bottom -220px; }
+  .reasons { padding: 19px 20px 13px; margin: 25px auto 24px; }
+  .reason-content h2 { font-size: 29px; }
+  .reason-content { min-height: 150px; }
+  .reason-topline { font-size: 6px; letter-spacing: 1px; }
+}
+@media (max-width: 800px) and (max-height: 780px) {
+  .garden-portal { width: 175px; height: 195px; }
+  .hero-flowers { bottom: -24px; }
+  .portal-caption { font-size: 9px; top: 12px; }
+  .portal-dedication { bottom: 5px; padding: 7px 12px; }
+  .portal-dedication strong { font-size: 20px; }
+  .flower-wish { width: 30px; height: 30px; font-size: 18px; right: -15px; bottom: 0; }
+  .entry-screen { gap: 23px; }
+  .entry-title { font-size: 50px; }
+}
+@media (max-width: 800px) and (max-height: 650px) {
+  .garden-portal { width: 140px; height: 145px; }
+  .hero-flowers { bottom: -17px; }
+  .portal-dedication strong { font-size: 16px; }
+  .portal-caption { font-size: 7px; top: 9px; }
+  .entry-screen { gap: 18px; }
+  .entry-title { font-size: 43px; }
+  .garden-portal .envelope { right: -25px; top: 14%; scale: .6; }
+}
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; } }
