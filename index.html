@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Happy Birthday</title>
+    <title>For you, my favourite person ♡</title>
     <meta
       name="description"
       content="A dreamy birthday surprise for the most magical love."
@@ -14,10 +14,15 @@
       href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="style.css?v=20261112-2" />
+    <link rel="stylesheet" href="style.css?v=20261112-3" />
   </head>
   <body>
     <div class="stars" aria-hidden="true"></div>
+    <div class="aurora" aria-hidden="true"></div>
+    <div class="moon" aria-hidden="true"></div>
+    <div class="orbit orbit-one" aria-hidden="true"></div>
+    <div class="orbit orbit-two" aria-hidden="true"></div>
+    <header class="site-header"><span class="brand">a little magic <i>♡</i></span><span class="header-note">MADE ONLY FOR YOU</span></header>
 
     <div class="petals" aria-hidden="true">
       <span style="--i: 1"></span>
@@ -45,15 +50,24 @@
     <main class="page-shell">
       <section class="entry-screen" id="entryScreen">
         <div class="inner-glow"></div>
+        <div class="eyebrow"><span></span> A LITTLE UNIVERSE, JUST FOR YOU <span></span></div>
+        <div class="envelope" aria-hidden="true"><div class="envelope-paper">for you, always.</div><div class="envelope-front"></div><div class="envelope-seal">♡</div></div>
+        <h1 class="entry-title">Some people are<br>just <em>magic.</em></h1>
+        <p class="entry-description">And you, my love, are all of mine.<br>Tonight, the stars have a little surprise for you.</p>
         <button id="openButton" class="open-button" type="button">
-          Tap to open your magical surprise
+          Open your surprise <span aria-hidden="true">↗</span>
         </button>
+        <p class="entry-footnote">A little music. A little wish. A whole lot of love.</p>
       </section>
 
       <section class="surprise-screen" id="surpriseScreen" aria-live="polite">
+        <div class="scene-heading"><p class="eyebrow">THE WORLD GOT LUCKIER TODAY</p><h2>Make a little <em>wish.</em></h2><p>Close your eyes. Think of something beautiful.</p></div>
         <div class="cake-scene">
+          <div class="cake-halo" aria-hidden="true"></div>
+          <span class="cake-spark spark-one" aria-hidden="true">✧</span><span class="cake-spark spark-two" aria-hidden="true">✦</span><span class="cake-spark spark-three" aria-hidden="true">✧</span>
           <div class="cake-wrap">
             <div class="cake">
+              <div class="cake-ribbon" aria-hidden="true">made with love ♡</div>
               <div class="cake-top"></div>
               <div class="icing icing-1"></div>
               <div class="icing icing-2"></div>
@@ -92,6 +106,7 @@
         </div>
 
         <p id="statusText" class="status-text">Blow gently to make the wish come true</p>
+        <div class="mic-meter" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
         <div class="interaction-controls">
           <button id="micButton" class="small-button" type="button">Enable microphone</button>
           <button id="wishButton" class="small-button" type="button">Tap to blow out candles</button>
@@ -100,6 +115,7 @@
 
       <section class="finale-overlay" id="finaleOverlay" aria-live="assertive">
         <div class="finale-card">
+          <div class="finale-heart" aria-hidden="true">♡</div>
           <p class="subtitle">For the one who makes my world glow</p>
           <h1>Happy Birthday <span id="nameText">my dear piluuuu urf smituuuuuu</span></h1>
           <p class="message">
@@ -109,9 +125,13 @@
             you more than words can ever say. May your every wish bloom into the sweetest
             reality, today and always.
           </p>
+          <p class="love-signature">In every universe, I'd choose you.</p>
+          <button class="small-button letter-button" id="letterButton" type="button">One more little thing ♡</button>
+          <p id="secretLetter" class="secret-letter" hidden>Iss duniya mein kitne bhi taare ho, meri favourite roshni tum hi rahogi. Happy birthday, meri jaan. Aaj, kal, aur hamesha — sirf tum. ♡</p>
         </div>
       </section>
     </main>
+    <footer class="site-footer"><span>YOU + ME + A LITTLE STARDUST</span><span>with all my love ♡</span></footer>
 
     <div class="music-controls" id="musicControls" hidden>
       <button id="musicButton" class="small-button" type="button">Play music</button>
@@ -123,6 +143,6 @@
     </audio>
 
     <script async src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
-    <script src="script.js?v=20261112-2"></script>
+    <script src="script.js?v=20261112-3"></script>
   </body>
 </html>

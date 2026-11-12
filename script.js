@@ -82,6 +82,7 @@ async function initMicrophone() {
     audioContext.createMediaStreamSource(micStream).connect(analyser);
     dataArray = new Uint8Array(analyser.fftSize);
     micButton.hidden = true;
+    document.body.classList.add("listening");
     statusText.textContent = "Make a wish, then blow gently near your microphone";
     frameId = requestAnimationFrame(updateVolume);
   } catch (error) {
@@ -101,6 +102,9 @@ function updateVolume(time) {
   let energy = 0;
   for (const sample of dataArray) energy += ((sample - 128) / 128) ** 2;
   const rms = Math.sqrt(energy / dataArray.length);
+  document.querySelectorAll(".mic-meter span").forEach((bar, index) => {
+    bar.style.height = `${4 + Math.min(rms * 230, 22) * (0.5 + Math.sin(index + time / 150) * 0.5)}px`;
+  });
   if (rms > BLOW_THRESHOLD) {
     if (loudSince === null) loudSince = time;
     if (time - loudSince >= 180) { triggerBlowOut(); return; }
@@ -108,6 +112,7 @@ function updateVolume(time) {
   frameId = requestAnimationFrame(updateVolume);
 }
 function stopMicrophone() {
+  document.body.classList.remove("listening");
   cancelAnimationFrame(frameId);
   micStream?.getTracks().forEach(track => track.stop());
   micStream = null;
@@ -133,8 +138,17 @@ function triggerBlowOut() {
   setTimeout(() => {
     launchConfetti();
     finaleOverlay.classList.add("visible");
+    surpriseScreen.inert = true;
+    document.getElementById("letterButton").focus({ preventScroll: true });
   }, 900);
 }
+
+document.getElementById("letterButton").addEventListener("click", () => {
+  const letter = document.getElementById("secretLetter");
+  letter.hidden = !letter.hidden;
+  document.getElementById("letterButton").textContent = letter.hidden ? "One more little thing ♡" : "Forever yours ♡";
+  if (!letter.hidden) letter.scrollIntoView({ behavior: "smooth", block: "nearest" });
+});
 
 function launchConfetti() {
   if (typeof confetti !== "function") {
