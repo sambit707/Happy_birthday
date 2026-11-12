@@ -14,15 +14,18 @@
       href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="style.css?v=20261112-3" />
+    <meta name="theme-color" content="#100e1d" />
+    <link rel="stylesheet" href="style.css?v=garden-1" />
   </head>
   <body>
     <div class="stars" aria-hidden="true"></div>
+    <canvas id="stardust" aria-hidden="true"></canvas>
+    <div class="garden-floor" aria-hidden="true"><img src="garden.svg" alt="" /><img src="garden.svg" alt="" /></div>
     <div class="aurora" aria-hidden="true"></div>
     <div class="moon" aria-hidden="true"></div>
     <div class="orbit orbit-one" aria-hidden="true"></div>
     <div class="orbit orbit-two" aria-hidden="true"></div>
-    <header class="site-header"><span class="brand">a little magic <i>♡</i></span><span class="header-note">MADE ONLY FOR YOU</span></header>
+    <header class="site-header"><span class="brand">a little magic <i>♡</i></span><span class="header-note">A BIRTHDAY LOVE LETTER</span></header>
 
     <div class="petals" aria-hidden="true">
       <span style="--i: 1"></span>
@@ -50,20 +53,31 @@
     <main class="page-shell">
       <section class="entry-screen" id="entryScreen">
         <div class="inner-glow"></div>
+        <div class="entry-copy">
         <div class="eyebrow"><span></span> A LITTLE UNIVERSE, JUST FOR YOU <span></span></div>
-        <div class="envelope" aria-hidden="true"><div class="envelope-paper">for you, always.</div><div class="envelope-front"></div><div class="envelope-seal">♡</div></div>
-        <h1 class="entry-title">Some people are<br>just <em>magic.</em></h1>
-        <p class="entry-description">And you, my love, are all of mine.<br>Tonight, the stars have a little surprise for you.</p>
+        <h1 class="entry-title">Of all the stars,<br>I'm so glad<br>I found <em>you.</em></h1>
+        <p class="entry-description">A whole little world, made for my favourite person.<br>Come in, my love. Everything here blooms for you.</p>
         <button id="openButton" class="open-button" type="button">
           Open your surprise <span aria-hidden="true">↗</span>
         </button>
         <p class="entry-footnote">A little music. A little wish. A whole lot of love.</p>
+        </div>
+        <div class="garden-portal">
+          <div class="portal-ring" aria-hidden="true"></div>
+          <span class="portal-star star-a" aria-hidden="true">✧</span><span class="portal-star star-b" aria-hidden="true">✦</span>
+          <span class="portal-caption">a garden of little wishes</span>
+          <img class="hero-flowers" src="garden.svg" alt="An illustrated garden of blush roses, lavender and golden daisies" />
+          <div class="envelope" aria-hidden="true"><div class="envelope-paper">for you, always.</div><div class="envelope-front"></div><div class="envelope-seal">♡</div></div>
+          <div class="portal-dedication"><span>TO MY FAVOURITE PERSON</span><strong>Piluuuu ♡</strong></div>
+          <span class="portal-coordinate">where my heart feels at home</span>
+        </div>
       </section>
 
-      <section class="surprise-screen" id="surpriseScreen" aria-live="polite">
+      <section class="surprise-screen" id="surpriseScreen" aria-live="polite" inert>
         <div class="scene-heading"><p class="eyebrow">THE WORLD GOT LUCKIER TODAY</p><h2>Make a little <em>wish.</em></h2><p>Close your eyes. Think of something beautiful.</p></div>
         <div class="cake-scene">
           <div class="cake-halo" aria-hidden="true"></div>
+          <img class="cake-flowers" src="garden.svg" alt="" aria-hidden="true" />
           <span class="cake-spark spark-one" aria-hidden="true">✧</span><span class="cake-spark spark-two" aria-hidden="true">✦</span><span class="cake-spark spark-three" aria-hidden="true">✧</span>
           <div class="cake-wrap">
             <div class="cake">
@@ -113,7 +127,7 @@
         </div>
       </section>
 
-      <section class="finale-overlay" id="finaleOverlay" aria-live="assertive">
+      <section class="finale-overlay" id="finaleOverlay" aria-live="assertive" inert>
         <div class="finale-card">
           <div class="finale-heart" aria-hidden="true">♡</div>
           <p class="subtitle">For the one who makes my world glow</p>
@@ -126,23 +140,29 @@
             reality, today and always.
           </p>
           <p class="love-signature">In every universe, I'd choose you.</p>
+          <div class="wish-tags"><span>more little adventures</span><span>more forehead kisses</span><span>more us ♡</span></div>
           <button class="small-button letter-button" id="letterButton" type="button">One more little thing ♡</button>
           <p id="secretLetter" class="secret-letter" hidden>Iss duniya mein kitne bhi taare ho, meri favourite roshni tum hi rahogi. Happy birthday, meri jaan. Aaj, kal, aur hamesha — sirf tum. ♡</p>
+          <button class="bloom-button" id="bloomButton" type="button">Send a little love <span aria-hidden="true">✿</span></button>
+          <p class="love-whisper" id="loveWhisper" aria-live="polite">A thousand wishes. All of them, for you.</p>
         </div>
       </section>
     </main>
-    <footer class="site-footer"><span>YOU + ME + A LITTLE STARDUST</span><span>with all my love ♡</span></footer>
+    <footer class="site-footer"><div class="chapter-track" aria-label="Surprise progress"><span class="active" id="chapterOne">01 <i>the invitation</i></span><b></b><span id="chapterTwo">02 <i>the wish</i></span><b></b><span id="chapterThree">03 <i>always you</i></span></div><span>with all my love ♡</span></footer>
 
     <div class="music-controls" id="musicControls" hidden>
+      <div class="track-details"><span class="record-icon" aria-hidden="true">♫</span><div><strong>Perfect</strong><span>Ed Sheeran · just for you</span></div></div>
       <button id="musicButton" class="small-button" type="button">Play music</button>
+      <input id="musicProgress" class="music-progress" type="range" min="0" max="100" value="0" step="0.1" aria-label="Song position" />
       <p id="musicStatus" role="status"></p>
     </div>
     <audio id="bgMusic" preload="none" loop playsinline>
       <!-- Your selected song: Perfect. -->
-      <source src="Perfect.mp3" type="audio/mpeg" />
+      <source src="perfect-garden.mp3" type="audio/mpeg" />
     </audio>
 
     <script async src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
-    <script src="script.js?v=20261112-3"></script>
+    <script src="script.js?v=garden-1"></script>
+    <script src="experience.js?v=garden-1"></script>
   </body>
 </html>

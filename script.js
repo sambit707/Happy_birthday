@@ -17,11 +17,14 @@ music.volume = 0.35;
 let opened = false, micPending = false, blowTriggered = false;
 let analyser, dataArray, audioContext, micStream, frameId;
 let loudSince = null;
+let calibrationStart = null;
+let ambientLevel = 0;
+let ambientSamples = 0;
 function playMusic() {
   musicStatus.textContent = "Loading your song...";
   const pending = music.play();
   if (pending) pending.catch(() => {
-    musicStatus.textContent = "Tap Play music to retry. If it still fails, check the song URL in index.html.";
+    musicStatus.textContent = "The music is taking a moment. Tap Play music to try again.";
     musicButton.textContent = "Play music";
   });
 }
@@ -30,7 +33,7 @@ music.addEventListener("playing", () => {
   musicButton.textContent = "Pause music";
 });
 music.addEventListener("error", () => {
-  musicStatus.textContent = "Song unavailable. Use a direct MP3 URL or a local song.mp3 in index.html.";
+  musicStatus.textContent = "The song couldn't load. Tap Retry music to try again.";
   musicButton.textContent = "Retry music";
 });
 musicButton.addEventListener("click", () => {
@@ -48,6 +51,9 @@ function startMagic() {
   entryScreen.classList.add("hidden");
   entryScreen.inert = true;
   surpriseScreen.classList.add("visible");
+  surpriseScreen.inert = false;
+  document.body.classList.add("wishing");
+  document.getElementById("chapterTwo").classList.add("active");
   document.getElementById("musicControls").hidden = false;
   // Both requests start during the tap; remote music never delays the mic prompt.
   playMusic();
@@ -82,11 +88,15 @@ async function initMicrophone() {
     audioContext.createMediaStreamSource(micStream).connect(analyser);
     dataArray = new Uint8Array(analyser.fftSize);
     micButton.hidden = true;
+    calibrationStart = null;
+    ambientLevel = 0;
+    ambientSamples = 0;
     document.body.classList.add("listening");
     statusText.textContent = "Make a wish, then blow gently near your microphone";
     frameId = requestAnimationFrame(updateVolume);
   } catch (error) {
     stopMicrophone();
+    if (blowTriggered) return;
     statusText.textContent = error.name === "NotAllowedError" || error.name === "SecurityError"
       ? "Microphone blocked. Allow Microphone in this site's browser settings, then tap Retry microphone. Or tap below to make your wish."
       : "Microphone unavailable. Check your microphone and retry, or tap below to make your wish.";
@@ -105,7 +115,15 @@ function updateVolume(time) {
   document.querySelectorAll(".mic-meter span").forEach((bar, index) => {
     bar.style.height = `${4 + Math.min(rms * 230, 22) * (0.5 + Math.sin(index + time / 150) * 0.5)}px`;
   });
-  if (rms > BLOW_THRESHOLD) {
+  if (calibrationStart === null) calibrationStart = time;
+  if (time - calibrationStart < 800) {
+    ambientLevel += rms;
+    ambientSamples++;
+    frameId = requestAnimationFrame(updateVolume);
+    return;
+  }
+  const threshold = Math.max(BLOW_THRESHOLD, Math.min(0.24, (ambientLevel / Math.max(1, ambientSamples)) * 2.6));
+  if (rms > threshold) {
     if (loudSince === null) loudSince = time;
     if (time - loudSince >= 180) { triggerBlowOut(); return; }
   } else loudSince = null;
@@ -129,15 +147,17 @@ function triggerBlowOut() {
   document.querySelector(".interaction-controls").hidden = true;
 
   document.body.classList.add("blown");
+  document.getElementById("chapterThree").classList.add("active");
   statusText.textContent = "The wish has been made...";
 
   candles.forEach((candle) => {
     candle.classList.add("extinguished");
   });
 
+  launchConfetti();
   setTimeout(() => {
-    launchConfetti();
     finaleOverlay.classList.add("visible");
+    finaleOverlay.inert = false;
     surpriseScreen.inert = true;
     document.getElementById("letterButton").focus({ preventScroll: true });
   }, 900);
@@ -151,6 +171,7 @@ document.getElementById("letterButton").addEventListener("click", () => {
 });
 
 function launchConfetti() {
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
   if (typeof confetti !== "function") {
     console.warn("Confetti library not available.");
     return;
